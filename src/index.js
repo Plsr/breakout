@@ -13,11 +13,23 @@ const paddleWidth = 75
 const paddleInitialX = (PlayingField.width - paddleWidth) / 2
 const MainPaddle = new Paddle(paddleInitialX, paddleWidth, 10, PlayingField)
 
+function checkLoseCondition() {
+  if (MainBall.posY >= PlayingField.height - MainBall.radius) {
+    if (MainBall.posX >= MainPaddle.posX && MainBall.posX <= MainPaddle.posX + MainPaddle.width) {
+      return MainBall.reverseYMovement()
+    }
+
+    alert('Game Over')
+    document.location.reload();
+    clearInterval(interval); // Needed for Chrome to end game
+  }
+}
 
 function draw() {
   PlayingField.clear()
+  checkLoseCondition()
   MainBall.move()
   MainPaddle.update()
 }
 
-setInterval(draw, 10);
+var interval = setInterval(draw, 10);
